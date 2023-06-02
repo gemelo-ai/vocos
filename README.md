@@ -8,7 +8,7 @@
 
 Author: Hubert Siuzdak
 
-Paper: (submitted)\
+Paper: [arXiv](https://arxiv.org/abs/2306.00814)\
 Code: [GitHub](https://github.com/charactr-platform/vocos)
 
 > **Abstract**

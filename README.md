@@ -11,6 +11,14 @@ Author: Hubert Siuzdak
 Paper: [arXiv](https://arxiv.org/abs/2306.00814)\
 Code: [GitHub](https://github.com/charactr-platform/vocos)
 
+---
+
+## Updates
+### 2023-06-12
+Added examples generated with Bark text-to-audio model. Check them out [here](#audio-reconstruction-from-bark-tokens).
+
+---
+
 > **Abstract**
 > Recent advancements in neural vocoding are predominantly driven by Generative Adversarial Networks (GANs) operating in
 > the time-domain. While effective, this approach neglects the inductive bias offered by time-frequency representations,
@@ -304,5 +312,67 @@ inverse Fourier transform.
     <td><audio controls preload="none" style="width: 175px;"><source src="audio/mel/bigvgan/7021_85628_000037_000000.mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
     <td><audio controls preload="none" style="width: 175px;"><source src="audio/mel/istftnet/7021_85628_000037_000000.mp3" type="audio/mp3">Your browser does not support the audio element.</audio> </td>
     <td><audio controls preload="none" style="width: 175px;"><source src="audio/mel/vocos/7021_85628_000037_000000.mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
+  </tr>
+</table>
+
+### Audio reconstruction from Bark tokens
+
+Sequence of tokens generated with Bark text-to-audio model: https://github.com/suno-ai/bark
+
+<table>
+  <tr>
+    <th>Text prompt</th>
+    <th>EnCodec</th>
+    <th>Vocos</th>
+  </tr>
+  <tr>
+    <td>So, you've heard about neural vocoding? [laughs] We've been messing around with this new model called Vocos.</td>
+    <td><audio controls preload="none"><source src="audio/bark/encodec(1).mp3" type="audio/mp3">Your browser does not support the audio element.</audio> </td>
+    <td><audio controls preload="none"><source src="audio/bark/vocos(1).mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
+  </tr>
+  <tr>
+    <td>Ok [clears throat] let's compare the audio outputs. Listen carefully to the differences in each sample's quality and artifacts.</td>
+    <td><audio controls preload="none"><source src="audio/bark/encodec.mp3" type="audio/mp3">Your browser does not support the audio element.</audio> </td>
+    <td><audio controls preload="none"><source src="audio/bark/vocos.mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
+  </tr>
+  <tr>
+    <td>My friend’s bakery burned down last night. [sighs] Now his business is toast. </td>
+    <td><audio controls preload="none"><source src="audio/bark/encodec(2).mp3" type="audio/mp3">Your browser does not support the audio element.</audio> </td>
+    <td><audio controls preload="none"><source src="audio/bark/vocos(2).mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
+  </tr>
+  <tr>
+    <td>Schweinsteiger ist ein nationales kulturgut. Wir müssen ihn um jeden preis schützen.</td>
+    <td><audio controls preload="none"><source src="audio/bark/encodec(3).mp3" type="audio/mp3">Your browser does not support the audio element.</audio> </td>
+    <td><audio controls preload="none"><source src="audio/bark/vocos(3).mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
+  </tr>
+  <tr>
+    <td>Polecam odwiedzenie Starego Miasta w Szczecinie! Architektura jest piękna, a lokalna kuchnia doskonała!</td>
+    <td><audio controls preload="none"><source src="audio/bark/encodec(4).mp3" type="audio/mp3">Your browser does not support the audio element.</audio> </td>
+    <td><audio controls preload="none"><source src="audio/bark/vocos(4).mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
+  </tr>
+  <tr>
+    <td>我计划在下周的游泳比赛中和我的朋友托尼比赛。他认为自己可以打败我，但他不知道我一直在浴缸里偷偷练习游泳。我不敢说我会赢，但我很确定我会搞出一片浪花。</td>
+    <td><audio controls preload="none"><source src="audio/bark/encodec(5).mp3" type="audio/mp3">Your browser does not support the audio element.</audio> </td>
+    <td><audio controls preload="none"><source src="audio/bark/vocos(5).mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
+  </tr>
+  <tr>
+    <td>Bonjour. Aujourd’hui, nous sommes içi pour manger trop de glace. </td>
+    <td><audio controls preload="none"><source src="audio/bark/encodec(6).mp3" type="audio/mp3">Your browser does not support the audio element.</audio> </td>
+    <td><audio controls preload="none"><source src="audio/bark/vocos(6).mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
+  </tr>
+  <tr>
+    <td>हॉटस्टार पर रुद्र सबसे बेहतरीन शो है! कहानी बेहद शानदार है, और अजय देवगन बहुत खूबसूरत लगते हैं। </td>
+    <td><audio controls preload="none"><source src="audio/bark/encodec(7).mp3" type="audio/mp3">Your browser does not support the audio element.</audio> </td>
+    <td><audio controls preload="none"><source src="audio/bark/vocos(7).mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
+  </tr>
+  <tr>
+    <td>¿Estos payasos llamaron a su modelo como un ladrido de perro? [laughs] ¿En serio?</td>
+    <td><audio controls preload="none"><source src="audio/bark/encodec(9).mp3" type="audio/mp3">Your browser does not support the audio element.</audio> </td>
+    <td><audio controls preload="none"><source src="audio/bark/vocos(9).mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
+  </tr>
+  <tr>
+    <td>추석은 내가 가장 좋아하는 명절이다. 나는 며칠 동안 휴식을 취하고 친구 및 가족과 시간을 보낼 수 있습니다</td>
+    <td><audio controls preload="none"><source src="audio/bark/encodec(11).mp3" type="audio/mp3">Your browser does not support the audio element.</audio> </td>
+    <td><audio controls preload="none"><source src="audio/bark/vocos(11).mp3" type="audio/mp3">Your browser does not support the audio element.</audio></td>
   </tr>
 </table>

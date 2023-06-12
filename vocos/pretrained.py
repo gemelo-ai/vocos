@@ -76,6 +76,7 @@ class Vocos(nn.Module):
         model.eval()
         return model
 
+    @torch.inference_mode()
     def forward(self, audio_input: torch.Tensor, **kwargs: Any) -> torch.Tensor:
         """
         Method to run a copy-synthesis from audio waveform. The feature extractor first processes the audio input,
@@ -93,6 +94,7 @@ class Vocos(nn.Module):
         audio_output = self.decode(features, **kwargs)
         return audio_output
 
+    @torch.inference_mode()
     def decode(self, features_input: torch.Tensor, **kwargs: Any) -> torch.Tensor:
         """
         Method to decode audio waveform from already calculated features. The features input is passed through
@@ -109,6 +111,7 @@ class Vocos(nn.Module):
         audio_output = self.head(x)
         return audio_output
 
+    @torch.inference_mode()
     def codes_to_features(self, codes: torch.Tensor) -> torch.Tensor:
         """
         Transforms an input sequence of discrete tokens (codes) into feature embeddings using the feature extractor's

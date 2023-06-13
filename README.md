@@ -3,6 +3,11 @@
 [Audio samples](https://charactr-platform.github.io/vocos/) |
 Paper [[abs]](https://arxiv.org/abs/2306.00814) [[pdf]](https://arxiv.org/pdf/2306.00814.pdf)
 
+Vocos is a fast neural vocoder designed to synthesize audio waveforms from acoustic features. Trained using a Generative
+Adversarial Network (GAN) objective, Vocos can generate waveforms in a single forward pass. Unlike other typical
+GAN-based vocoders, Vocos does not model audio samples in the time domain. Instead, it generates spectral
+coefficients, facilitating rapid audio reconstruction through inverse Fourier transform.
+
 ## Installation
 
 To use Vocos only in inference mode, install it using:
@@ -29,9 +34,7 @@ from vocos import Vocos
 vocos = Vocos.from_pretrained("charactr/vocos-mel-24khz")
 
 mel = torch.randn(1, 100, 256)  # B, C, T
-
-with torch.no_grad():
-    audio = vocos.decode(mel)
+audio = vocos.decode(mel)
 ```
 
 Copy-synthesis from a file:
@@ -43,24 +46,22 @@ y, sr = torchaudio.load(YOUR_AUDIO_FILE)
 if y.size(0) > 1:  # mix to mono
     y = y.mean(dim=0, keepdim=True)
 y = torchaudio.functional.resample(y, orig_freq=sr, new_freq=24000)
-
-with torch.no_grad():
-    y_hat = vocos(y)
+y_hat = vocos(y)
 ```
 
-### Reconstruct audio from EnCodec
+### Reconstruct audio from EnCodec tokens
 
-Additionally, you need to provide a `bandwidth_id` which corresponds to the lookup embedding for bandwidth from the
+Additionally, you need to provide a `bandwidth_id` which corresponds to the embedding for bandwidth from the
 list: `[1.5, 3.0, 6.0, 12.0]`.
 
 ```python
 vocos = Vocos.from_pretrained("charactr/vocos-encodec-24khz")
 
-quantized_features = torch.randn(1, 128, 256)
-bandwidth_id = torch.tensor([3])  # 12 kbps
+audio_tokens = torch.randint(low=0, high=1024, size=(8, 200))  # 8 codeboooks, 200 frames
+features = vocos.codes_to_features(audio_tokens)
+bandwidth_id = torch.tensor([2])  # 6 kbps
 
-with torch.no_grad():
-    audio = vocos.decode(quantized_features, bandwidth_id=bandwidth_id)  
+audio = vocos.decode(features, bandwidth_id=bandwidth_id)
 ```
 
 Copy-synthesis from a file: It extracts and quantizes features with EnCodec, then reconstructs them with Vocos in a
@@ -72,9 +73,12 @@ if y.size(0) > 1:  # mix to mono
     y = y.mean(dim=0, keepdim=True)
 y = torchaudio.functional.resample(y, orig_freq=sr, new_freq=24000)
 
-with torch.no_grad():
-    y_hat = vocos(y, bandwidth_id=bandwidth_id)
+y_hat = vocos(y, bandwidth_id=bandwidth_id)
 ```
+
+### Integrate with 🐶 [Bark](https://github.com/suno-ai/bark) text-to-audio model
+
+See [example notebook](notebooks%2FBark%2BVocos.ipynb).
 
 ## Pre-trained models
 

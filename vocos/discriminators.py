@@ -1,10 +1,13 @@
-from typing import Tuple, List
+from typing import List, Optional, Tuple
 
 import torch
 from torch import nn
 from torch.nn import Conv2d
 from torch.nn.utils import weight_norm
 
+
+PeriodsType = Tuple[int, int, int, int, int]
+ResolutionType = Tuple[int, int, int]
 
 class MultiPeriodDiscriminator(nn.Module):
     """
@@ -17,12 +20,12 @@ class MultiPeriodDiscriminator(nn.Module):
             Defaults to None.
     """
 
-    def __init__(self, periods: Tuple[int] = (2, 3, 5, 7, 11), num_embeddings: int = None):
+    def __init__(self, periods: PeriodsType = (2, 3, 5, 7, 11), num_embeddings: Optional[int] = None):
         super().__init__()
         self.discriminators = nn.ModuleList([DiscriminatorP(period=p, num_embeddings=num_embeddings) for p in periods])
 
     def forward(
-        self, y: torch.Tensor, y_hat: torch.Tensor, bandwidth_id: torch.Tensor = None
+        self, y: torch.Tensor, y_hat: torch.Tensor, bandwidth_id: Optional[torch.Tensor] = None
     ) -> Tuple[List[torch.Tensor], List[torch.Tensor], List[List[torch.Tensor]], List[List[torch.Tensor]]]:
         y_d_rs = []
         y_d_gs = []
@@ -47,7 +50,7 @@ class DiscriminatorP(nn.Module):
         kernel_size: int = 5,
         stride: int = 3,
         lrelu_slope: float = 0.1,
-        num_embeddings: int = None,
+        num_embeddings: Optional[int] = None,
     ):
         super().__init__()
         self.period = period
@@ -68,7 +71,7 @@ class DiscriminatorP(nn.Module):
         self.lrelu_slope = lrelu_slope
 
     def forward(
-        self, x: torch.Tensor, cond_embedding_id: torch.Tensor = None
+        self, x: torch.Tensor, cond_embedding_id: Optional[torch.Tensor] = None
     ) -> Tuple[torch.Tensor, List[torch.Tensor]]:
         x = x.unsqueeze(1)
         fmap = []
@@ -101,8 +104,8 @@ class DiscriminatorP(nn.Module):
 class MultiResolutionDiscriminator(nn.Module):
     def __init__(
         self,
-        resolutions: Tuple[Tuple[int, int, int]] = ((1024, 256, 1024), (2048, 512, 2048), (512, 128, 512)),
-        num_embeddings: int = None,
+        resolutions: Tuple[ResolutionType, ResolutionType, ResolutionType] = ((1024, 256, 1024), (2048, 512, 2048), (512, 128, 512)),
+        num_embeddings: Optional[int] = None,
     ):
         """
         Multi-Resolution Discriminator module adapted from https://github.com/mindslab-ai/univnet.
@@ -120,7 +123,7 @@ class MultiResolutionDiscriminator(nn.Module):
         )
 
     def forward(
-        self, y: torch.Tensor, y_hat: torch.Tensor, bandwidth_id: torch.Tensor = None
+        self, y: torch.Tensor, y_hat: torch.Tensor, bandwidth_id: Optional[torch.Tensor] = None
     ) -> Tuple[List[torch.Tensor], List[torch.Tensor], List[List[torch.Tensor]], List[List[torch.Tensor]]]:
         y_d_rs = []
         y_d_gs = []
@@ -144,7 +147,7 @@ class DiscriminatorR(nn.Module):
         resolution: Tuple[int, int, int],
         channels: int = 64,
         in_channels: int = 1,
-        num_embeddings: int = None,
+        num_embeddings: Optional[int] = None,
         lrelu_slope: float = 0.1,
     ):
         super().__init__()
@@ -166,7 +169,7 @@ class DiscriminatorR(nn.Module):
         self.conv_post = weight_norm(nn.Conv2d(channels, 1, (3, 3), padding=(1, 1)))
 
     def forward(
-        self, x: torch.Tensor, cond_embedding_id: torch.Tensor = None
+        self, x: torch.Tensor, cond_embedding_id: Optional[torch.Tensor] = None
     ) -> Tuple[torch.Tensor, List[torch.Tensor]]:
         fmap = []
         x = self.spectrogram(x)

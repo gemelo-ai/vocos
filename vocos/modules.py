@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Tuple
 
 import torch
 from torch import nn
@@ -106,9 +106,9 @@ class ResBlock1(nn.Module):
         self,
         dim: int,
         kernel_size: int = 3,
-        dilation: tuple[int] = (1, 3, 5),
+        dilation: Tuple[int, int, int] = (1, 3, 5),
         lrelu_slope: float = 0.1,
-        layer_scale_init_value: float = None,
+        layer_scale_init_value: Optional[float] = None,
     ):
         super().__init__()
         self.lrelu_slope = lrelu_slope

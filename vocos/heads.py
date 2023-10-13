@@ -55,14 +55,15 @@ class ISTFTHead(FourierHead):
         mag = torch.exp(mag)
         mag = torch.clip(mag, max=1e2)  # safeguard to prevent excessively large magnitudes
         # wrapping happens here. These two lines produce real and imaginary value
-        x = torch.cos(p)
-        y = torch.sin(p)
+        # x = torch.cos(p)
+        # y = torch.sin(p)
         # recalculating phase here does not produce anything new
         # only costs time
         # phase = torch.atan2(y, x)
         # S = mag * torch.exp(phase * 1j)
         # better directly produce the complex value 
-        S = mag * (x + 1j * y)
+        # S = mag * (x + 1j * y)
+        S = torch.polar(mag, p)
         audio = self.istft(S)
         return audio
 

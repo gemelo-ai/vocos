@@ -1,3 +1,5 @@
+from typing import Optional
+
 import torch
 from torch import nn
 from torchaudio.functional.functional import _hz_to_mel, _mel_to_hz
@@ -81,7 +83,12 @@ class IMDCTSymExpHead(FourierHead):
     """
 
     def __init__(
-        self, dim: int, mdct_frame_len: int, padding: str = "same", sample_rate: int = None, clip_audio: bool = False,
+        self,
+        dim: int,
+        mdct_frame_len: int,
+        padding: str = "same",
+        sample_rate: Optional[int] = None,
+        clip_audio: bool = False,
     ):
         super().__init__()
         out_dim = mdct_frame_len // 2

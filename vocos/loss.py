@@ -51,7 +51,7 @@ class GeneratorLoss(nn.Module):
             Tuple[Tensor, List[Tensor]]: Tuple containing the total loss and a list of loss values from
                                          the sub-discriminators
         """
-        loss = 0
+        loss = torch.zeros(1, device=disc_outputs[0].device, dtype=disc_outputs[0].dtype)
         gen_losses = []
         for dg in disc_outputs:
             l = torch.mean(torch.clamp(1 - dg, min=0))
@@ -79,15 +79,15 @@ class DiscriminatorLoss(nn.Module):
                                                        the sub-discriminators for real outputs, and a list of
                                                        loss values for generated outputs.
         """
-        loss = 0
+        loss = torch.zeros(1, device=disc_real_outputs[0].device, dtype=disc_real_outputs[0].dtype)
         r_losses = []
         g_losses = []
         for dr, dg in zip(disc_real_outputs, disc_generated_outputs):
             r_loss = torch.mean(torch.clamp(1 - dr, min=0))
             g_loss = torch.mean(torch.clamp(1 + dg, min=0))
             loss += r_loss + g_loss
-            r_losses.append(r_loss.item())
-            g_losses.append(g_loss.item())
+            r_losses.append(r_loss)
+            g_losses.append(g_loss)
 
         return loss, r_losses, g_losses
 
@@ -106,7 +106,7 @@ class FeatureMatchingLoss(nn.Module):
         Returns:
             Tensor: The calculated feature matching loss.
         """
-        loss = 0
+        loss = torch.zeros(1, device=fmap_r[0][0].device, dtype=fmap_r[0][0].dtype)
         for dr, dg in zip(fmap_r, fmap_g):
             for rl, gl in zip(dr, dg):
                 loss += torch.mean(torch.abs(rl - gl))

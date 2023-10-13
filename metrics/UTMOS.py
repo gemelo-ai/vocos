@@ -26,7 +26,7 @@ class UTMOSScore:
             download_file(UTMOS_CKPT_URL, filepath)
         self.model = BaselineLightningModule.load_from_checkpoint(filepath).eval().to(device)
 
-    def score(self, wavs: torch.tensor) -> torch.tensor:
+    def score(self, wavs: torch.Tensor) -> torch.Tensor:
         """
         Args:
             wavs: audio waveform to be evaluated. When len(wavs) == 1 or 2,

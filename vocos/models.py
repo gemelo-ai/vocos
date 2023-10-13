@@ -74,7 +74,8 @@ class VocosBackbone(Backbone):
             nn.init.trunc_normal_(m.weight, std=0.02)
             nn.init.constant_(m.bias, 0)
 
-    def forward(self, x: torch.Tensor, bandwidth_id: Optional[torch.Tensor] = None) -> torch.Tensor:
+    def forward(self, x: torch.Tensor, **kwargs) -> torch.Tensor:
+        bandwidth_id = kwargs.get('bandwidth_id', None)
         x = self.embed(x)
         if self.adanorm:
             assert bandwidth_id is not None

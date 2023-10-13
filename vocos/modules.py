@@ -21,7 +21,7 @@ class ConvNeXtBlock(nn.Module):
         self,
         dim: int,
         intermediate_dim: int,
-        layer_scale_init_value: Optional[float] = None,
+        layer_scale_init_value: float,
         adanorm_num_embeddings: Optional[int] = None,
     ):
         super().__init__()

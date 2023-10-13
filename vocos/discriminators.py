@@ -5,9 +5,9 @@ from torch import nn
 from torch.nn import Conv2d
 from torch.nn.utils import weight_norm
 
-
 PeriodsType = Tuple[int, ...]
 ResolutionType = Tuple[int, int, int]
+
 
 class MultiPeriodDiscriminator(nn.Module):
     """
@@ -104,7 +104,11 @@ class DiscriminatorP(nn.Module):
 class MultiResolutionDiscriminator(nn.Module):
     def __init__(
         self,
-        resolutions: Tuple[ResolutionType, ResolutionType, ResolutionType] = ((1024, 256, 1024), (2048, 512, 2048), (512, 128, 512)),
+        resolutions: Tuple[ResolutionType, ResolutionType, ResolutionType] = (
+            (1024, 256, 1024),
+            (2048, 512, 2048),
+            (512, 128, 512),
+        ),
         num_embeddings: Optional[int] = None,
     ):
         """

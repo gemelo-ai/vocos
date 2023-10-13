@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, Self, Tuple, Union
+from typing import Any, Dict, Tuple, Union, Optional
 
 import torch
 import yaml
@@ -47,7 +47,7 @@ class Vocos(nn.Module):
         self.head = head
 
     @classmethod
-    def from_hparams(cls, config_path: str) -> Self:
+    def from_hparams(cls, config_path: str) -> Vocos:
         """
         Class method to create a new Vocos model instance from hyperparameters stored in a yaml configuration file.
         """
@@ -60,12 +60,12 @@ class Vocos(nn.Module):
         return model
 
     @classmethod
-    def from_pretrained(cls, repo_id: str) -> Self:
+    def from_pretrained(cls, repo_id: str, revision: Optional[str] = None) -> Vocos:
         """
         Class method to create a new Vocos model instance from a pre-trained model stored in the Hugging Face model hub.
         """
-        config_path = hf_hub_download(repo_id=repo_id, filename="config.yaml")
-        model_path = hf_hub_download(repo_id=repo_id, filename="pytorch_model.bin")
+        config_path = hf_hub_download(repo_id=repo_id, filename="config.yaml", revision=revision)
+        model_path = hf_hub_download(repo_id=repo_id, filename="pytorch_model.bin", revision=revision)
         model = cls.from_hparams(config_path)
         state_dict = torch.load(model_path, map_location="cpu")
         if isinstance(model.feature_extractor, EncodecFeatures):

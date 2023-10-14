@@ -78,8 +78,8 @@ class VocosExp(pl.LightningModule):
             {"params": self.head.parameters()},
         ]
 
-        opt_disc = torch.optim.AdamW(disc_params, lr=self.hparams.initial_learning_rate)
-        opt_gen = torch.optim.AdamW(gen_params, lr=self.hparams.initial_learning_rate)
+        opt_disc = torch.optim.AdamW(disc_params, lr=self.hparams.initial_learning_rate, betas=(0.8, 0.9))
+        opt_gen = torch.optim.AdamW(gen_params, lr=self.hparams.initial_learning_rate, betas=(0.8, 0.9))
 
         max_steps = self.trainer.max_steps // 2  # Max steps per optimizer
         scheduler_disc = transformers.get_cosine_schedule_with_warmup(

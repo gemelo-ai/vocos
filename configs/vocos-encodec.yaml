@@ -22,7 +22,7 @@ model:
   class_path: vocos.experiment.VocosEncodecExp
   init_args:
     sample_rate: 24000
-    initial_learning_rate: 2e-4
+    initial_learning_rate: 5e-4
     mel_loss_coeff: 45
     mrd_loss_coeff: 1.0
     num_warmup_steps: 0 # Optimizers warmup steps

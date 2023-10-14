@@ -82,14 +82,10 @@ See [example notebook](notebooks%2FBark%2BVocos.ipynb).
 
 ## Pre-trained models
 
-The provided models were trained up to 2.5 million generator iterations, which resulted in slightly better objective
-scores
-compared to those reported in the paper.
-
 | Model Name                                                                          | Dataset       | Training Iterations | Parameters 
-|-------------------------------------------------------------------------------------|---------------|---------------------|------------|
-| [charactr/vocos-mel-24khz](https://huggingface.co/charactr/vocos-mel-24khz)         | LibriTTS      | 2.5 M               | 13.5 M     
-| [charactr/vocos-encodec-24khz](https://huggingface.co/charactr/vocos-encodec-24khz) | DNS Challenge | 2.5 M               | 7.9 M      
+|-------------------------------------------------------------------------------------|---------------|-------------------|------------|
+| [charactr/vocos-mel-24khz](https://huggingface.co/charactr/vocos-mel-24khz)         | LibriTTS      | 1M                | 13.5M
+| [charactr/vocos-encodec-24khz](https://huggingface.co/charactr/vocos-encodec-24khz) | DNS Challenge | 2M                | 7.9M
 
 ## Training
 

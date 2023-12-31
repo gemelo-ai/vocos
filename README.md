@@ -105,6 +105,28 @@ python train.py -c configs/vocos.yaml
 Refer to [Pytorch Lightning documentation](https://lightning.ai/docs/pytorch/stable/) for details about customizing the
 training pipeline.
 
+## Offline mode
+
+If internet is not available in your GPU cluster, you can upload vocos and encodec checkpoint
+to your GPU cluster and enable offline mode.
+
+```python
+import sys
+import os
+
+os.environ['HF_HOME'] = '/home/your_name/your_hf_home'
+os.environ['HF_DATASETS_OFFLINE'] = '1'
+os.environ['TRANSFORMERS_OFFLINE'] = '1'
+os.environ['VOCOS_OFFLINE'] = '1' # just like `transformers` and `datasets`
+
+import torch
+from vocos import Vocos
+
+vocos = Vocos.from_pretrained(
+        "/your_folder/charactr/vocos-encodec-24khz",
+        feature_extractor_repo='/your_folder/torch-hub/hub/checkpoints')
+```
+
 ## Citation
 
 If this code contributes to your research, please cite our work:

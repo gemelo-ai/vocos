@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from typing import Any, Dict, Tuple, Union, Optional
 
 import torch
@@ -47,12 +48,17 @@ class Vocos(nn.Module):
         self.head = head
 
     @classmethod
-    def from_hparams(cls, config_path: str) -> Vocos:
+    def from_hparams(cls,
+                     config_path: str,
+                     feature_extractor_repo: Optional[str] = None) -> Vocos:
         """
         Class method to create a new Vocos model instance from hyperparameters stored in a yaml configuration file.
         """
         with open(config_path, "r") as f:
             config = yaml.safe_load(f)
+        if feature_extractor_repo is not None:
+            kwargs = config['feature_extractor'].setdefault("init_args", {})
+            kwargs['repo'] = feature_extractor_repo
         feature_extractor = instantiate_class(args=(), init=config["feature_extractor"])
         backbone = instantiate_class(args=(), init=config["backbone"])
         head = instantiate_class(args=(), init=config["head"])
@@ -60,13 +66,26 @@ class Vocos(nn.Module):
         return model
 
     @classmethod
-    def from_pretrained(cls, repo_id: str, revision: Optional[str] = None) -> Vocos:
+    def from_pretrained(cls,
+                        repo_id: str,
+                        revision: Optional[str] = None,
+                        feature_extractor_repo: Optional[str] = None) -> Vocos:
         """
         Class method to create a new Vocos model instance from a pre-trained model stored in the Hugging Face model hub.
         """
-        config_path = hf_hub_download(repo_id=repo_id, filename="config.yaml", revision=revision)
-        model_path = hf_hub_download(repo_id=repo_id, filename="pytorch_model.bin", revision=revision)
-        model = cls.from_hparams(config_path)
+        offline = os.environ.get('VOCOS_OFFLINE', '0') == '1'
+        if offline:
+            config_path = os.path.join(repo_id, 'config.yaml')
+            model_path = os.path.join(repo_id, 'pytorch_model.bin')
+        else:
+            config_path = hf_hub_download(repo_id=repo_id,
+                                          filename="config.yaml",
+                                          revision=revision)
+            model_path = hf_hub_download(repo_id=repo_id,
+                                         filename="pytorch_model.bin",
+                                         revision=revision)
+        model = cls.from_hparams(config_path,
+                                 feature_extractor_repo=feature_extractor_repo)
         state_dict = torch.load(model_path, map_location="cpu")
         if isinstance(model.feature_extractor, EncodecFeatures):
             encodec_parameters = {

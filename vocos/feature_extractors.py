@@ -1,4 +1,5 @@
-from typing import List
+from typing import Optional, List
+from pathlib import Path
 
 import torch
 import torchaudio
@@ -55,6 +56,7 @@ class EncodecFeatures(FeatureExtractor):
         encodec_model: str = "encodec_24khz",
         bandwidths: List[float] = [1.5, 3.0, 6.0, 12.0],
         train_codebooks: bool = False,
+        repo: Optional[str] = None,
     ):
         super().__init__()
         if encodec_model == "encodec_24khz":
@@ -65,7 +67,9 @@ class EncodecFeatures(FeatureExtractor):
             raise ValueError(
                 f"Unsupported encodec_model: {encodec_model}. Supported options are 'encodec_24khz' and 'encodec_48khz'."
             )
-        self.encodec = encodec(pretrained=True)
+        if repo is not None:
+            repo = Path(repo)
+        self.encodec = encodec(pretrained=True, repository=repo)
         for param in self.encodec.parameters():
             param.requires_grad = False
         self.num_q = self.encodec.quantizer.get_num_quantizers_for_bandwidth(

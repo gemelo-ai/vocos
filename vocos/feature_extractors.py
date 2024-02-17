@@ -26,7 +26,16 @@ class FeatureExtractor(nn.Module):
 
 
 class MelSpectrogramFeatures(FeatureExtractor):
-    def __init__(self, sample_rate=24000, n_fft=1024, hop_length=256, n_mels=100, padding="center"):
+    def __init__(self,
+                sample_rate=24000,
+                n_fft=1024,
+                hop_length=256,
+                n_mels=100,
+                padding="center",
+                f_min=0, # to match matcha :X
+                f_max=8000,
+                norm="slaney",
+                mel_scale="slaney"):
         super().__init__()
         if padding not in ["center", "same"]:
             raise ValueError("Padding must be 'center' or 'same'.")
@@ -38,6 +47,10 @@ class MelSpectrogramFeatures(FeatureExtractor):
             n_mels=n_mels,
             center=padding == "center",
             power=1,
+            f_min=f_min, # to match matcha :X
+            f_max=f_max,
+            norm=norm,
+            mel_scale=mel_scale
         )
 
     def forward(self, audio, **kwargs):

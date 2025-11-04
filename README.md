@@ -105,6 +105,15 @@ python train.py -c configs/vocos.yaml
 Refer to [Pytorch Lightning documentation](https://lightning.ai/docs/pytorch/stable/) for details about customizing the
 training pipeline.
 
+
+## Gotchas
+
+You may need to set the following environment variable to avoid build errors:
+
+```console
+export RUSTFLAGS="-A invalid_reference_casting"
+```
+
 ## Citation
 
 If this code contributes to your research, please cite our work:

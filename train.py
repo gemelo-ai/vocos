@@ -1,3 +1,5 @@
+"""Command-line entry point for training Vocos models from a LightningCLI config."""
+
 from pytorch_lightning.cli import LightningCLI
 
 

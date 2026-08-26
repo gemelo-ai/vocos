@@ -8,6 +8,13 @@ Adversarial Network (GAN) objective, Vocos can generate waveforms in a single fo
 GAN-based vocoders, Vocos does not model audio samples in the time domain. Instead, it generates spectral
 coefficients, facilitating rapid audio reconstruction through inverse Fourier transform.
 
+## Project maintenance
+
+Vocos remains available for research and production use, and the maintainers are continuing to review focused,
+backward-compatible improvements. Current priorities include documentation, project infrastructure, issue and pull
+request triage, and making the contribution path clearer. If you use Vocos downstream, feedback and small,
+well-scoped contributions are welcome.
+
 ## Installation
 
 To use Vocos only in inference mode, install it using:
@@ -57,7 +64,7 @@ list: `[1.5, 3.0, 6.0, 12.0]`.
 ```python
 vocos = Vocos.from_pretrained("charactr/vocos-encodec-24khz")
 
-audio_tokens = torch.randint(low=0, high=1024, size=(8, 200))  # 8 codeboooks, 200 frames
+audio_tokens = torch.randint(low=0, high=1024, size=(8, 200))  # 8 codebooks, 200 frames
 features = vocos.codes_to_features(audio_tokens)
 bandwidth_id = torch.tensor([2])  # 6 kbps
 
@@ -104,6 +111,12 @@ python train.py -c configs/vocos.yaml
 
 Refer to [Pytorch Lightning documentation](https://lightning.ai/docs/pytorch/stable/) for details about customizing the
 training pipeline.
+
+## Contributing
+
+Bug reports, documentation improvements, and focused fixes are welcome. Please read
+[CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request, and include enough detail for maintainers to
+understand and reproduce the change.
 
 ## Citation
 

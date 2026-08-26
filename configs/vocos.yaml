@@ -4,6 +4,7 @@ seed_everything: 4444
 data:
   class_path: vocos.dataset.VocosDataModule
   init_args:
+    # Replace each placeholder with a text file containing one audio path per line.
     train_params:
       filelist_path: ???
       sampling_rate: 24000
@@ -28,7 +29,7 @@ model:
     num_warmup_steps: 0 # Optimizers warmup steps
     pretrain_mel_steps: 0  # 0 means GAN objective from the first iteration
 
-    # automatic evaluation
+    # Optional automatic evaluation metrics run during validation.
     evaluate_utmos: true
     evaluate_pesq: true
     evaluate_periodicty: true

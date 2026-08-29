@@ -27,6 +27,20 @@ Pull requests should summarize the change, link any related issue, and call out 
 clear validation steps are especially helpful for changes that affect model loading, tensor shapes, audio sampling
 rates, or training behavior.
 
+## Local checks
+
+Install the package and test dependencies in an isolated environment, then run the CPU unit tests:
+
+```bash
+python -m pip install -e .
+python -m pip install -r requirements-test.txt
+python -m pytest -q
+```
+
+The unit tests do not download pretrained checkpoints or require a GPU. They cover focused source-level behavior and
+are not a substitute for checkpoint compatibility, audio-quality, or full training validation when a change affects
+those areas.
+
 ## Documentation
 
 Documentation-only pull requests are welcome. Please keep examples concise, preserve the existing checkpoint names,

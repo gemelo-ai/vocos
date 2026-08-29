@@ -122,7 +122,7 @@ class IMDCTSymExpHead(FourierHead):
         x = torch.clip(x, min=-1e2, max=1e2)  # safeguard to prevent excessively large magnitudes
         audio = self.imdct(x)
         if self.clip_audio:
-            audio = torch.clip(x, min=-1.0, max=1.0)
+            audio = torch.clip(audio, min=-1.0, max=1.0)
 
         return audio
 
@@ -160,5 +160,5 @@ class IMDCTCosHead(FourierHead):
         m = torch.exp(m).clip(max=1e2)  # safeguard to prevent excessively large magnitudes
         audio = self.imdct(m * torch.cos(p))
         if self.clip_audio:
-            audio = torch.clip(x, min=-1.0, max=1.0)
+            audio = torch.clip(audio, min=-1.0, max=1.0)
         return audio

@@ -1,5 +1,5 @@
 import numpy as np
-import scipy
+import scipy.signal
 import torch
 from torch import nn, view_as_real, view_as_complex
 
@@ -92,7 +92,7 @@ class MDCT(nn.Module):
         self.frame_len = frame_len
         N = frame_len // 2
         n0 = (N + 1) / 2
-        window = torch.from_numpy(scipy.signal.cosine(frame_len)).float()
+        window = torch.from_numpy(scipy.signal.windows.cosine(frame_len)).float()
         self.register_buffer("window", window)
 
         pre_twiddle = torch.exp(-1j * torch.pi * torch.arange(frame_len) / frame_len)
@@ -147,7 +147,7 @@ class IMDCT(nn.Module):
         self.frame_len = frame_len
         N = frame_len // 2
         n0 = (N + 1) / 2
-        window = torch.from_numpy(scipy.signal.cosine(frame_len)).float()
+        window = torch.from_numpy(scipy.signal.windows.cosine(frame_len)).float()
         self.register_buffer("window", window)
 
         pre_twiddle = torch.exp(1j * torch.pi * n0 * torch.arange(N * 2) / N)

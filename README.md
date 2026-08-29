@@ -20,14 +20,21 @@ well-scoped contributions are welcome.
 To use Vocos only in inference mode, install it using:
 
 ```bash
-pip install vocos
+python -m pip install vocos
 ```
 
-If you wish to train the model, install it with additional dependencies:
+The training entry point, configs, and metrics live in the source repository. To train a model, clone the repository
+and install it with the training dependencies:
 
 ```bash
-pip install vocos[train]
+git clone https://github.com/gemelo-ai/vocos.git
+cd vocos
+python -m pip install "setuptools<80"
+python -m pip install -e ".[train]"
 ```
+
+The checked-in training stack pins PyTorch Lightning 1.8.6, which still uses `pkg_resources`; keeping Setuptools below
+version 80 in the training environment preserves that compatibility.
 
 ## Usage
 
@@ -49,7 +56,8 @@ Copy-synthesis from a file:
 ```python
 import torchaudio
 
-y, sr = torchaudio.load(YOUR_AUDIO_FILE)
+audio_path = "path/to/audio.wav"
+y, sr = torchaudio.load(audio_path)
 if y.size(0) > 1:  # mix to mono
     y = y.mean(dim=0, keepdim=True)
 y = torchaudio.functional.resample(y, orig_freq=sr, new_freq=24000)
@@ -75,7 +83,8 @@ Copy-synthesis from a file: It extracts and quantizes features with EnCodec, the
 single forward pass.
 
 ```python
-y, sr = torchaudio.load(YOUR_AUDIO_FILE)
+audio_path = "path/to/audio.wav"
+y, sr = torchaudio.load(audio_path)
 if y.size(0) > 1:  # mix to mono
     y = y.mean(dim=0, keepdim=True)
 y = torchaudio.functional.resample(y, orig_freq=sr, new_freq=24000)
@@ -85,32 +94,35 @@ y_hat = vocos(y, bandwidth_id=bandwidth_id)
 
 ### Integrate with 🐶 [Bark](https://github.com/suno-ai/bark) text-to-audio model
 
-See [example notebook](notebooks%2FBark%2BVocos.ipynb).
+See [example notebook](notebooks/Bark%2BVocos.ipynb).
 
 ## Pre-trained models
 
-| Model Name                                                                          | Dataset       | Training Iterations | Parameters 
-|-------------------------------------------------------------------------------------|---------------|-------------------|------------|
-| [charactr/vocos-mel-24khz](https://huggingface.co/charactr/vocos-mel-24khz)         | LibriTTS      | 1M                | 13.5M
-| [charactr/vocos-encodec-24khz](https://huggingface.co/charactr/vocos-encodec-24khz) | DNS Challenge | 2M                | 7.9M
+| Model Name                                                                          | Dataset       | Training Iterations | Parameters |
+|-------------------------------------------------------------------------------------|---------------|---------------------|------------|
+| [charactr/vocos-mel-24khz](https://huggingface.co/charactr/vocos-mel-24khz)         | LibriTTS      | 1M                  | 13.5M      |
+| [charactr/vocos-encodec-24khz](https://huggingface.co/charactr/vocos-encodec-24khz) | DNS Challenge | 2M                  | 7.9M       |
 
 ## Training
 
 Prepare a filelist of audio files for the training and validation set:
 
 ```bash
-find $TRAIN_DATASET_DIR -name *.wav > filelist.train
-find $VAL_DATASET_DIR -name *.wav > filelist.val
+find "$TRAIN_DATASET_DIR" \( -type f -o -type l \) -name '*.wav' -print > filelist.train
+find "$VAL_DATASET_DIR" \( -type f -o -type l \) -name '*.wav' -print > filelist.val
 ```
 
-Fill a config file, e.g. [vocos.yaml](configs%2Fvocos.yaml), with your filelist paths and start training with:
+This includes symlinked `.wav` files without following symlinked directories.
+
+Fill a config file, e.g. [vocos.yaml](configs/vocos.yaml), with your filelist paths and start training with:
 
 ```bash
 python train.py -c configs/vocos.yaml
 ```
 
-Refer to [Pytorch Lightning documentation](https://lightning.ai/docs/pytorch/stable/) for details about customizing the
-training pipeline.
+The checked-in training code and configs target PyTorch Lightning 1.8.6. Refer to the
+[PyTorch Lightning 1.8.6 documentation](https://pytorch-lightning.readthedocs.io/en/1.8.6/) for details about
+customizing that training pipeline.
 
 ## Contributing
 

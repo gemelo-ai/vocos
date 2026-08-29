@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions and usage discussions
+    url: https://github.com/gemelo-ai/vocos/discussions
+    about: Ask usage questions and compare downstream integration approaches.

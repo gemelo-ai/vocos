@@ -1,0 +1,60 @@
+name: Bug report
+description: Report a reproducible problem with Vocos
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Vocos. Please search existing issues before filing a new report.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Problem
+      description: What happened, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include the smallest code sample, config, or command that reproduces the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include Vocos, Python, PyTorch, TorchAudio, operating system, and accelerator versions.
+      placeholder: |
+        Vocos:
+        Python:
+        PyTorch / TorchAudio:
+        OS:
+        CPU / GPU:
+    validations:
+      required: true
+  - type: input
+    id: checkpoint
+    attributes:
+      label: Checkpoint or config
+      description: Name the checkpoint and revision, or the config file, if relevant.
+  - type: textarea
+    id: audio
+    attributes:
+      label: Audio details
+      description: Include input shape, channels, sample rate, and preprocessing if the problem affects audio output.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or traceback
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched the existing issues and pull requests.
+          required: true
+        - label: I removed private data and credentials from the reproduction and logs.
+          required: true

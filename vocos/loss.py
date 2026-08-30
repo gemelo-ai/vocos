@@ -12,12 +12,28 @@ class MelSpecReconstructionLoss(nn.Module):
     L1 distance between the mel-scaled magnitude spectrograms of the ground truth sample and the generated sample
     """
 
-    def __init__(
-        self, sample_rate: int = 24000, n_fft: int = 1024, hop_length: int = 256, n_mels: int = 100,
+    def __init__(self,
+                sample_rate: int = 22050,
+                n_fft: int = 1024,
+                hop_length: int = 256,
+                n_mels: int = 80,
+                f_min: int = 0,
+                f_max: int = 8000,
+                norm: str = "slaney",
+                mel_scale: str = "slaney",
     ):
         super().__init__()
         self.mel_spec = torchaudio.transforms.MelSpectrogram(
-            sample_rate=sample_rate, n_fft=n_fft, hop_length=hop_length, n_mels=n_mels, center=True, power=1,
+            sample_rate=sample_rate,
+            n_fft=n_fft,
+            hop_length=hop_length,
+            n_mels=n_mels,
+            center=True,
+            power=1,
+            f_min=f_min, 
+            f_max=f_max,
+            norm=norm,
+            mel_scale=mel_scale
         )
 
     def forward(self, y_hat, y) -> torch.Tensor:

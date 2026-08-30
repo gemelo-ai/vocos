@@ -67,7 +67,7 @@ class Vocos(nn.Module):
         config_path = hf_hub_download(repo_id=repo_id, filename="config.yaml", revision=revision)
         model_path = hf_hub_download(repo_id=repo_id, filename="pytorch_model.bin", revision=revision)
         model = cls.from_hparams(config_path)
-        state_dict = torch.load(model_path, map_location="cpu")
+        state_dict = torch.load(model_path, map_location="cpu", weights_only=True)
         if isinstance(model.feature_extractor, EncodecFeatures):
             encodec_parameters = {
                 "feature_extractor.encodec." + key: value
